@@ -1,4 +1,4 @@
 # LeetCodeSolution
-LeetCode practice。
 
-LeetCode简单算法部分题解。
+
+LeetCode  自己联系算法题解。
