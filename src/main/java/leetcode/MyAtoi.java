@@ -4,7 +4,7 @@ public class MyAtoi {
 
     static int myatoi(String s){
         StringBuilder sb = new StringBuilder();
-        int resulte  ;
+        int resulte;
         int flag = 1;
         for(int i = 0; i< s.length(); i++){
             if(Character.isWhitespace(s.charAt(i))) continue;
