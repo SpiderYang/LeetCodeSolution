@@ -6,6 +6,10 @@ package 双指针;
  */
 /*
 * 给定一个非空字符串s，最多删除一个字符。判断是否能成为回文字符串
+* 题解：1：本身就是回文串，直接返回true；
+* 2：需要删除1个字符为回文串，使用双指针存在两种情况，left这边删除一个后为回文，right这边删除一个。两种只要任意
+* 一个为回文即可返回true；
+* 3：上述都不符合返回false。
 * */
 public class validPalindrome {
         public validPalindrome(){}
