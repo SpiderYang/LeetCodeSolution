@@ -1,57 +1,45 @@
 package 线程相关;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 /**
  * @Author: Hikari
  * @Date: 2022/1/24 18:03
  */
 
-public class concurrentNum extends Thread{
-    /**
-     * If this thread was constructed using a separate
-     * <code>Runnable</code> run object, then that
-     * <code>Runnable</code> object's <code>run</code> method is called;
-     * otherwise, this method does nothing and returns.
-     * <p>
-     * Subclasses of <code>Thread</code> should override this method.
-     *
-     * @see #start()
-     * @see #stop()
-     * @see #Thread(ThreadGroup, Runnable, String)
-     */
+public class concurrentNum {
 
-    private static int index = 1;
-    private final int MAX=500;
-    @Override
-    public void run() {
-        while(index < MAX){
-            System.out.println(Thread.currentThread().getName() + "  当前数字：" + index++);
-        }
+    static final int MAX=50;
+
+    private static final Object MUTEX = new Object();
+
+    static class Counter{
+        public static int counter = 1;
     }
 
     public static void main(String[] args) {
-        Thread t1 = new concurrentNum();
-        Thread t2 = new concurrentNum();
-        Thread t3 = new concurrentNum();
-        Thread t4 = new concurrentNum();
-        Thread t5 = new concurrentNum();
-        Thread t6 = new concurrentNum();
-        Thread t7 = new concurrentNum();
-        Thread t8 = new concurrentNum();
-        Thread t9 = new concurrentNum();
-        Thread t10 = new concurrentNum();
-        Thread t11 = new concurrentNum();
-        Thread t12 = new concurrentNum();
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
-        t6.start();
-        t7.start();
-        t8.start();
-        t9.start();
-        t10.start();
-        t11.start();
-        t12.start();
+        Runnable run = () -> {
+            synchronized (MUTEX) {
+                while (Counter.counter < MAX) {
+                    try {
+                        System.out.println(Counter.counter++);
+                        //Counter.counter++;
+                        TimeUnit.MILLISECONDS.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        List<Thread> list = IntStream.range(1,3).mapToObj(f -> new Thread(run, "Thread-" + String.valueOf(f)))
+                .collect(Collectors.toList());
+        list.forEach(Thread::start);
+
     }
-}
+    }
+
